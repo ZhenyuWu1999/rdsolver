@@ -1,3 +1,14 @@
+/*
+ * This file was written by Ben Morton (bmorton@ed.ac.uk) and Zenyu Wu (zhenyu.wu@ed.ac.uk).
+ */
+
+#include <iostream>
+
+#include "constants.h"
+#include "vertex2D.h"
+
+extern int POINT_CHECK;
+
 double F(double X){
         double FUNC = exp(-1.0/X);
         if(X<0.0){FUNC = 0.0;}
@@ -9,14 +20,11 @@ double G(double X){
         return FUNC;
 }
 
-
 VERTEX setup_vertex(double X, double Y){
         VERTEX NEW_VERTEX;
 
         NEW_VERTEX.set_x(X);
         NEW_VERTEX.set_y(Y);
-
-        double DX = SIDE_LENGTH_X/1000.0;               // hot garbage
 
         NEW_VERTEX.set_dx(SIDE_LENGTH_X/1000.0);
         NEW_VERTEX.set_dy(SIDE_LENGTH_Y/1000.0);
@@ -76,23 +84,15 @@ VERTEX setup_vertex(double X, double Y){
 
 #endif
 #ifdef SEDOV
-         // if(i==0 and j==0){std::cout << "Using 2D Sedov Blast" << std::endl;}
-
+    // if(i==0 and j==0){std::cout << "Using 2D Sedov Blast" << std::endl;}
         double RHO = 1.0;
         double V = 0.00000001;
         double P = 100.0;
 
         double R = sqrt((X - 5.0)*(X - 5.0) + (Y - 5.0)*(Y - 5.0));
 
-        if(R < R_BLAST){
-                P = 1000000.0;
-                // P = 1000.0;
-                std::cout << POINT_CHECK << "\tSetting blast pressure point at\t" << X << "\t" << Y << "\t" << P << std::endl;
-                POINT_CHECK ++;
-        }
-
         NEW_VERTEX.set_mass_density(RHO);                       // units kg/m^3
-        NEW_VERTEX.set_x_velocity(V);                             // units m/s
+        NEW_VERTEX.set_x_velocity(V);                           // units m/s
         NEW_VERTEX.set_y_velocity(V);
         NEW_VERTEX.set_pressure(P);                             // units N/m^2
 
@@ -102,7 +102,7 @@ VERTEX setup_vertex(double X, double Y){
 
         double CENTRE = 0.5;
         double S,W,RHO,RHO_0 = 10.0,RHO_PULSE = 50.0;
-        double X_VELOCITY = 2.0,PRESSURE = 100.0;
+        double X_VELOCITY = 2.0,PRESSURE = 10.0;
 
         S = std::abs(CENTRE - X);                                       // distance from centre of pulse
         W = 0.1;                                                 // characteristic width
@@ -111,7 +111,8 @@ VERTEX setup_vertex(double X, double Y){
 
         NEW_VERTEX.set_mass_density(RHO);
         NEW_VERTEX.set_x_velocity(X_VELOCITY);
-        NEW_VERTEX.set_y_velocity(0.00000001);
+        //NEW_VERTEX.set_y_velocity(0.00000001);
+        NEW_VERTEX.set_y_velocity(0.0);
         NEW_VERTEX.set_pressure(PRESSURE);
 
 #endif
@@ -157,7 +158,7 @@ VERTEX setup_vertex(double X, double Y){
         X_VEL_NORM = X_VEL/sqrt(X_VEL*X_VEL + Y_VEL*Y_VEL);
         Y_VEL_NORM = Y_VEL/sqrt(X_VEL*X_VEL + Y_VEL*Y_VEL);
 
-        if(X == X_C and Y == Y_C){X_VEL = Y_VEL = 0.00000001;}
+        if(X == X_C and Y == Y_C){X_VEL = Y_VEL = 0.000001;}
 
         // std::cout << X << "\t" << Y << "\t" << X_VEL_NORM << "\t" << Y_VEL_NORM << "\t" << sqrt(X_VEL_NORM*X_VEL_NORM + Y_VEL_NORM*Y_VEL_NORM) << std::endl;
 

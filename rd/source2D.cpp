@@ -1,3 +1,12 @@
+/*
+ * This file was written by Ben Morton (bmorton@ed.ac.uk) and Zhenyu Wu (zhenyu.wu@ed.ac.uk).
+ */
+
+#include <vector>
+
+#include "constants.h"
+#include "vertex2D.h"
+
 #ifdef ANALYTIC_GRAVITY
 void plummer_gravity(std::vector<VERTEX> &MY_POINTS, double DT, int N_POINTS){
         // Fixed Plummer potential at (XC,YC)
@@ -60,4 +69,5 @@ void sources(std::vector<VERTEX> &MY_POINTS, double DT, int N_POINTS){
 #ifdef SELF_GRAVITY
         direct_gravity(MY_POINTS, DT, N_POINTS);
 #endif
+        return ;
 }

@@ -1,10 +1,23 @@
 /*
-IO routines to write simple ASCII output for python plotting
+ * This file was written by Ben Morton (bmorton@ed.ac.uk).
+ * IO routines to write simple ASCII output for python plotting
         open_files => opens ouptut files to write positions, dens, pressure, vel maps, and column of values for 1D plot
-*/
+ */
+
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <vertex3D.h>
+#include <triangle3D.h>
+#include "all_functions3D.h"
 
 void open_snap(std::ofstream &SNAPFILE, int i){
         SNAPFILE.open(OUT_DIR+"snapshot3D_"+std::to_string(i)+".txt");
+        return;
+}
+
+void open_active(std::ofstream &SNAPFILE, int i){
+        SNAPFILE.open("output/active_"+std::to_string(i)+".txt");
         return;
 }
 
@@ -16,7 +29,7 @@ void write_snap(std::vector<VERTEX> POINTS, double T, double DT, int N_POINTS, i
         SNAPFILE << N_POINTS << "\t" << T << std::endl;
         for(int i=0;i<N_POINTS;++i){
                 // write         X                           Y                                 rho                                   v_x                                    v_y                                 p                                      e                                         |S|
-                SNAPFILE << POINTS[i].get_x() << "\t" << POINTS[i].get_y() << "\t" << POINTS[i].get_z() << "\t" << POINTS[i].get_mass_density() << "\t" << POINTS[i].get_x_velocity() << "\t" << POINTS[i].get_y_velocity() << "\t" << POINTS[i].get_pressure() << "\t" << POINTS[i].get_specific_energy() << "\t" << POINTS[i].get_dual() << std::endl;
+                SNAPFILE << POINTS[i].get_x() << "\t" << POINTS[i].get_y() << "\t" << POINTS[i].get_z() << "\t" << POINTS[i].get_mass_density() << "\t" << POINTS[i].get_x_velocity() << "\t" << POINTS[i].get_y_velocity() << "\t" << POINTS[i].get_z_velocity() << "\t" << POINTS[i].get_pressure() << "\t" << POINTS[i].get_specific_energy() << "\t" << POINTS[i].get_dual() << std::endl;
                 TOTAL_DENSITY += POINTS[i].get_mass_density()*POINTS[i].get_dual();
                 TOTAL_ENERGY += POINTS[i].get_specific_energy()*POINTS[i].get_dual() * POINTS[i].get_mass_density();
         }
@@ -25,6 +38,30 @@ void write_snap(std::vector<VERTEX> POINTS, double T, double DT, int N_POINTS, i
         LOGFILE << T << "\t" << TOTAL_DENSITY << "\t" << TOTAL_ENERGY << "\t" << DT << "\t" << N_TBINS << "\t" << N_POINTS << std::endl;
         SNAPFILE.close();
         return;
+}
+
+void write_active(std::vector<TRIANGLE> MESH, int N_TRIANG, int SNAP_ID, int TBIN_CURRENT){
+        std::ofstream SNAPFILE;
+        SNAPFILE << std::setprecision(12);
+        double X0,X1,X2,Y0,Y1,Y2;
+        open_active(SNAPFILE,SNAP_ID);
+        SNAPFILE << N_TRIANG << "\t" << std::endl;
+        for(int j=0;j<N_TRIANG;++j){
+                if(MESH[j].get_boundary() == 0){
+                        X0 = MESH[j].get_vertex_0()->get_x();
+                        X1 = MESH[j].get_vertex_1()->get_x();
+                        X2 = MESH[j].get_vertex_2()->get_x();
+                        Y0 = MESH[j].get_vertex_0()->get_y();
+                        Y1 = MESH[j].get_vertex_1()->get_y();
+                        Y2 = MESH[j].get_vertex_2()->get_y();
+                        // write         X        Y          TBIN
+                        SNAPFILE << X0 << "\t" << Y0 << "\t"  << X1 << "\t" << Y1 << "\t"  << X2 << "\t" << Y2 << "\t" << MESH[j].get_tbin() << "\t" << MESH[j].get_un00() << "\t" << MESH[j].get_un01() << "\t" << MESH[j].get_un02() << std::endl;
+                }
+        }
+}
+
+void read_parameter_file(int ARGC, char *ARGV[]){
+        printf("Parameter file = %s\n", ARGV[1]);
 }
 
 // if using CGAL triangulation file, read vertex header info

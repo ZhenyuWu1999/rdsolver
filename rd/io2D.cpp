@@ -1,7 +1,15 @@
-/*
-IO routines to write simple ASCII output for python plotting
+/*                                                                           
+ * This file was written by Ben Morton (bmorton@ed.ac.uk) and Zhenyu Wu (zhenyu.wu@ed.ac.uk).
+ * IO routines to write simple ASCII output for python plotting
         open_files => opens ouptut files to write positions, dens, pressure, vel maps, and column of values for 1D plot
 */
+
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <vertex2D.h>
+#include <triangle2D.h>
+#include "all_functions.h"
 
 void open_snap(std::ofstream &SNAPFILE, int i){
         SNAPFILE.open(OUT_DIR+"snapshot_"+std::to_string(i)+".txt");
@@ -115,6 +123,7 @@ TRIANGLE qhull_read_triangles_line(std::ifstream &TRIANGLES_FILE, std::vector<VE
 #endif
 
 // if using CGAL triangulation file, read vertex header info
+#define CGAL_IC
 #ifdef CGAL_IC
 int cgal_read_positions_header(std::ifstream &CGAL_FILE){
         int N_POINTS, XSHEETS, YSHEETS;

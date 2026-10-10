@@ -1,3 +1,7 @@
+/*
+ * This file was written by Ben Morton (bmorton@ed.ac.uk).
+ */
+
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -8,21 +12,16 @@
 #include <stdio.h>
 #include <omp.h> 
 
-
 #include "constants3D.h"
-
-#include "cblas.h"
-#include "lapacke.h"
-#include "inverse.cpp"
-#include "base.cpp"
+#include "all_functions3D.h"
 
 #ifdef THREE_D
 #include "vertex3D.h"
 #include "triangle3D.h"
-#include "setup3D.cpp"
-#include "io3D.cpp"
-#include "source3D.cpp"
-#include "timestep.cpp"
+#endif
+
+#ifdef SEDOV
+    int POINT_CHECK = 0;
 #endif
 
 int main(){
@@ -173,7 +172,7 @@ int main(){
 
         printf("Checking mesh size ...");
         printf("Mesh Size = %d\n",int(RAND_MESH.size()));
-        printf("Evolving fluid ...");
+        printf("Evolving fluid ...\n");
 
         /****** Loop over time until total time T_TOT is reached *****************************************************************************************************/
 
@@ -188,7 +187,7 @@ int main(){
                 DT = DT_FIX;
 #endif
 
-                printf("STEP =\t%d\tTIME =\t%f\tTIMESTEP =\t%f\t%f/100\r", l, T, DT, 100.0*T/T_TOT);
+                printf("STEP =\t%d\tTIME =\t%f\tTIMESTEP =\t%f\t%f/100\n", l, T, DT, 100.0*T/T_TOT);
 
                 if(T >= NEXT_TIME){                                       // write out densities at given interval
                         write_snap(RAND_POINTS,T,DT,N_POINTS,SNAP_ID,LOGFILE);
