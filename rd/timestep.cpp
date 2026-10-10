@@ -3,7 +3,11 @@
  */
 
 #include <vector>
+#ifdef RD_BUILD_3D
+#include "triangle3D.h"
+#else
 #include "triangle2D.h"
+#endif
 #include "base.h"
 
 void drift_update_half(int TBIN_CURRENT, int N_TRIANG, double T, double DT, std::vector<TRIANGLE> &RAND_MESH){

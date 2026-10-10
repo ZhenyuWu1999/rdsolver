@@ -7,7 +7,7 @@
 // #define SODX
 // #define SODY
 // #define SINEX
-// #define SEDOV
+#define SEDOV
 // #define GAUSSX
 // #define GAUSSY
 // #define UNIFORM
@@ -15,7 +15,7 @@
 // #define KHX
 // #define KHY
 // #define KHXSMOOTH
-#define KHYSMOOTH
+// #define KHYSMOOTH
 // #define BLOB
 // #define DF
 
@@ -59,13 +59,13 @@
 /* define flag for timesteps */
 //-----------------------------------------
 // #define FIXED_DT
-// #define DRIFT
+#define DRIFT
 // #define DRIFT_SHELL
 // #define JUMP
 #include<cmath>
 #include<string>
 
-const double N_TBINS = 1; // set maximum time bin (must be power of 2)
+const double N_TBINS = 4; // set maximum time bin (must be power of 2)
 const int MAX_TBIN = pow(2,N_TBINS);
 
 //-----------------------------------------
@@ -77,17 +77,17 @@ const int MAX_TBIN = pow(2,N_TBINS);
 //-----------------------------------------
 /* define distribution scheme */
 //-----------------------------------------
-#define LDA_SCHEME
-// #define N_SCHEME
+// #define LDA_SCHEME
+#define N_SCHEME
 // #define BLENDED
 
 //-----------------------------------------
 /* set order of scheme (none for 2nd order) */
 //-----------------------------------------
-#define FIRST_ORDER
+// #define FIRST_ORDER
 
 // #define SELF_GRAVITY // !!! NOT PERIODIC !!!
-// #define ANALYTIC_GRAVITY
+#define ANALYTIC_GRAVITY
 // #define PARA_RES
 // #define PARA_UP
 

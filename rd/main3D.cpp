@@ -20,7 +20,7 @@
 #include "triangle3D.h"
 #endif
 
-#ifdef SEDOV
+#if defined(SEDOV2D) || defined(SEDOV3D)
     int POINT_CHECK = 0;
 #endif
 
@@ -34,6 +34,9 @@ int main(){
         double NEXT_TIME = 0.0;                                    // NEXT_TIME    = time of next snapshot
         double NEXT_DT = T_TOT, POSSIBLE_DT = T_TOT;               // NEXT_DT.     = timestep for upcoming time iteration
         double MIN_DT;
+#if defined(SEDOV2D) || defined(SEDOV3D)
+        double AREA_CHECK = 0.0;
+#endif
         VERTEX                               NEW_VERTEX;           // NEW_VERTEX   = dummy variable for setting up vertices
         TRIANGLE                             NEW_TRIANGLE;         // NEW_TRIABLE  = dummy variable for setting up triangles
         std::vector<VERTEX>                  RAND_POINTS;          // X_POINTS     = vector of x vertices
@@ -113,6 +116,7 @@ int main(){
 
         for(j=0; j<N_TRIANG; ++j){
                 NEW_TRIANGLE = cgal_read_triangles_line(CGAL_FILE,RAND_POINTS,j);
+                NEW_TRIANGLE.set_tbin(1);
                 RAND_MESH.push_back(NEW_TRIANGLE);
         }
 

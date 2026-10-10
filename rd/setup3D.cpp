@@ -21,6 +21,7 @@ double G(double X){
 
 VERTEX setup_vertex(double X, double Y, double Z){
         VERTEX NEW_VERTEX;
+        NEW_VERTEX.set_dual(0.0);
 
         NEW_VERTEX.set_x(X);
         NEW_VERTEX.set_y(Y);

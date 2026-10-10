@@ -1,5 +1,5 @@
-#ifndef RD_CONSTANTS_H
-#define RD_CONSTANTS_H
+#ifndef RD_CONSTANTS3D_H
+#define RD_CONSTANTS3D_H
 
 //-----------------------------------------
 /* choose hydro test */
@@ -9,7 +9,7 @@
 // #define SODY
 // #define SINEX
 // #define SEDOV2D
-// #define SEDOV3D
+#define SEDOV3D
 // #define GAUSS3D
 // #define UNIFORM
 // #define NOH
@@ -18,7 +18,7 @@
 // #define KHXSMOOTH
 // #define KHYSMOOTH
 // #define BLOB
-#define GRAVITY
+// #define GRAVITY
 
 //-----------------------------------------
 /* set dimensionality */
@@ -29,7 +29,7 @@
 //-----------------------------------------
 /* set umber of snapshots */
 //-----------------------------------------
-#define N_SNAP 100
+#define N_SNAP 20
 
 //-----------------------------------------
 /* debug flag for debug output */
@@ -50,9 +50,9 @@
 //-----------------------------------------
 /* define boundary conditions (none for periodic) */
 //-----------------------------------------
-// #define CLOSED
-#define PERIODIC
-// #define REFLECTIVE        // doesn't work yet
+// #define CLOSED_BOUNDARY
+#define PERIODIC_BOUNDARY
+// #define REFLECTIVE_BOUNDARY        // doesn't work yet
 
 //-----------------------------------------
 /* define flag for fixed timestep */
@@ -83,10 +83,10 @@ const int MAX_TBIN = pow(2,N_TBINS);
 //-----------------------------------------
 /* set order of scheme (none for 2nd order) */
 //-----------------------------------------
-#define FIRST_ORDER
+// #define FIRST_ORDER
 
 // #define SELF_GRAVITY // !!! NOT PERIODIC !!!
-#define ANALYTIC_GRAVITY
+// #define ANALYTIC_GRAVITY
 // #define PARA_RES
 // #define PARA_UP
 
@@ -94,7 +94,7 @@ const double M_LIM = 0.0001;
 const double E_LIM = 0.0001;
 const double C_LIM = 0.0001;
 
-const std::string OUT_DIR = "output64/";
+const std::string OUT_DIR = "output/";
 const std::string LOG_DIR = OUT_DIR + "log.txt";  
 
 // Sod Shock Tube (Varied in X)
@@ -146,8 +146,7 @@ const double SIDE_LENGTH_Z = 10.0;
 
 const double R_BLAST     = 0.25;
 const double BLAST_E_TOT = 0.0;
-const double AREA_CHECK  = 0.0;
-const int POINT_CHECK    = 0;
+extern int POINT_CHECK;
 #endif
 
 // Gaussian pulse advection (x-direction)
@@ -248,4 +247,4 @@ const double BND_TOL = 0.75;
 const double DT_FIX = 0.00001;
 #endif
 
-#endif // RD_CONSTANTS_H
+#endif // RD_CONSTANTS3D_H

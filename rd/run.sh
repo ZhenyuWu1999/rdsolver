@@ -1,8 +1,12 @@
-#g++ main.cpp -llapack -lblas
-#./a.out
+#!/usr/bin/env bash
+set -euo pipefail
 
-#clang++ -Xpreprocessor -fopenmp -L /usr/local/opt/llvm/lib -lomp -I /usr/local/opt/openblas/include /usr/local/opt/openblas/lib/libopenblas.a main.cpp -o lairds
-#./lairds
-
-clang++ -I/home/morton/local/include -L/home/morton/local/lib -lopenblas main.cpp
-
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+cmake -S "$script_dir" -B "$script_dir/build"
+cmake --build "$script_dir/build" --target rd2D --parallel
+if [[ "${1:-}" == "--build-only" ]]; then
+    exit 0
+fi
+cd "$script_dir"
+mkdir -p output
+exec "$script_dir/build/rd2D" "$@"

@@ -1,16 +1,12 @@
-#g++ main.cpp -I /usr/local/opt/openblas/include /usr/local/opt/openblas/lib/libopenblas.a
-#./a.out
+#!/usr/bin/env bash
+set -euo pipefail
 
-clang++ -Xpreprocessor -fopenmp -lomp -O3 -I /usr/local/opt/openblas/include /usr/local/opt/openblas/lib/libopenblas.a main3D.cpp -o lairds3D
-./lairds3D
-
-# clang++ -I /home/morton/local/include  -L /home/morton/local/lib -lopenblas -o lairds main3D.cpp
-
-# cd output
-# pythonw plot1D.py &
-
-# cd output
-# pythonw vor_plot2D.py
-
-# cd ../../../exact_sod
-# python sod_plot_rd.py &
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+cmake -S "$script_dir" -B "$script_dir/build"
+cmake --build "$script_dir/build" --target rd3D --parallel
+if [[ "${1:-}" == "--build-only" ]]; then
+    exit 0
+fi
+cd "$script_dir"
+mkdir -p output
+exec "$script_dir/build/rd3D" "$@"
